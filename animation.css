@@ -1,0 +1,134 @@
+:root {
+    --grid-rows: 1;
+    --grid-cols: 1;
+}
+
+body {
+    margin: 0;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.topnav {
+    display: flex;
+    margin-bottom: 10px;
+    background-color: #2b4161;
+    overflow: hidden;
+}
+
+.bottomnav {
+    display: flex;
+    margin-top: 10px;
+    background-color: #2b4161;
+    overflow: hidden;
+}
+
+#visualiser {
+    display: grid;
+    flex: 1;
+    margin: 50px;
+    background-color: #9fadb5;
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+}
+
+.node {
+    background-color: #b1b1b1;
+    border: 2px solid #ddd;
+
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
+    overflow: visible;
+
+    --node-id: 0;
+    --grid-x: -1;
+    --grid-y: -1;
+
+    --solidity: False;
+    --can-solidify: False;
+    --is-start: False;
+    --is-end: False;
+
+    --g-score: 9999;
+    --f-score: 9999;
+}
+  
+
+.grid-slider {
+    width: 50%;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.wall {
+    width: 100%;
+    height: 100%;
+    animation-name: solidify-animation;
+    animation-duration: 0.3s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.check {
+    width: 100%;
+    height: 100%;
+    
+    animation-name: check-animation;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes check-animation {
+    0% {
+        transform: scale(0);
+        border-radius: 100%;
+        background-color: #00ffc8c9;
+    }
+
+    33% {
+        transform: scale(1);
+        border-radius: 0%;
+        background-color: #00aeffc9;
+    }
+
+    66% {
+        transform: scale(1.2);
+        border-radius: 0%;
+        background-color: #00ff4cc9;
+    }
+
+    100% {
+        transform: scale(1);
+        border-radius: 0%;
+        background-color: #00aeffc9;
+    }
+}
+
+@keyframes solidify-animation {
+    0% {
+        transform: scale(0);
+        background-color: red;
+    }
+
+    75% {
+        transform: scale(1.2);
+        background-color: #162336;
+    }
+
+    100% {
+        transform: scale(1);
+        background-color: #162336;
+    }
+}
