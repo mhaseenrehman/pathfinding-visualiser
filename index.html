@@ -11,25 +11,26 @@
         <div class="topnav" id="topnav">
             <select class="pathfind-algorithm-selection" id="pathfind-algorithm-selection">
                 <option value="A* Search">A* Search</option>
+                <option value="Dijkstra's Search">Dijkstra's Search</option>
                 <option value="DFS Search">DFS Search</option>
                 <option value="BFS Search">BFS Search</option>
-                <option value="Random Search">Random Search</option>
             </select>
             <button class="pathfind-button" id="pathfind-button">Pathfind</button>
             <select class="maze-algorithm-selection" id="maze-algorithm-selection">
                 <option value="Prim's Maze">Prim's Maze</option>
                 <option value="Kruskal's Maze">Kruskal's Maze</option>
-                <option value="Aldous-Broder Maze">Aldous-Broder Maze</option>
+                <option value="Growing Tree Maze">Growing Tree Maze</option>
                 <option value="Wilson's Maze">Wilson's Maze</option>
             </select>
-            <button>Generate Maze</button>
+            <button class="maze-gen-button" id="maze-gen-button">Generate Maze</button>
         </div>
         <div class="visualiser" id="visualiser">
         </div>
         <div class="bottomnav" id="bottomnav">
-            <button>Reset</button>
-            <button>Change Grid</button>
-            <input type="range" min="5" max="100" value="50" class="grid-slider" id="grid-slider">
+            <button class="reset-grid-button" id="reset-grid-button">Reset</button>
+            <button class="change-grid-button" id="change-grid-button">Change Grid</button>
+            <div class="grid-size-text" id="grid-size-text">Current Grid Size: 75</div>
+            <input type="range" min="5" max="100" value="75" class="grid-size-slider" id="grid-size-slider">
         </div>
     </div>
 </body>
