@@ -37,7 +37,7 @@ body {
 }
 
 .node {
-    background-color: #b1b1b1;
+    background-color: #a7a7a7ff;
     border: 2px solid #ddd;
     user-drag: none;
     -webkit-user-drag: none;
@@ -56,6 +56,7 @@ body {
     --can-solidify: False;
     --is-start: False;
     --is-end: False;
+    --path: False;
 
     --g-score: 9999;
     --f-score: 9999;

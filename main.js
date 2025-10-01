@@ -22,6 +22,10 @@ var isMouseDown = false;
 var movingStart = false;
 var movingEnd = false;
 
+var baseBackgroundColour = "#a7a7a7ff";
+var startNodeColour = "#5fb15f";
+var endNodeColour = "#ff0000";
+
 // --------------------------------------------------------------------------- Data Structure Utility --------------------------------------------------------------------------
 
 class tree {
@@ -131,15 +135,22 @@ async function getPathToGoal(nodePath, current) {
     var path = [];
 
     path.push(current);
-    current.style.backgroundColor = "orange";
+
+    current.innerHTML = "";
+    current.style.setProperty("--path", "True");
 
     while (nodePath[getComputedStyle(current).getPropertyValue('--node-id')] !== undefined) {
         current = nodePath[getComputedStyle(current).getPropertyValue('--node-id')];
+        if (current === startNode) {
+            break;
+        }
         path.push(current);
         current.innerHTML = "";
         current.style.backgroundColor = "orange";
+        current.style.setProperty("--path", "True");
         await sleep(30);
     }
+
     return path;
 }
 
@@ -237,29 +248,37 @@ async function dijkstrasSearch(start, goal) {
         
         if (row+1 < numRows) {
             let currentNeighbour = grid[row+1][col];
-            if (unexplored.includes(currentNeighbour)) {
-                neighbours.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (unexplored.includes(currentNeighbour)) {
+                    neighbours.push(currentNeighbour);
+                }
             }
         }
 
         if (col+1 < numCols) {
             let currentNeighbour = grid[row][col+1];
-            if (unexplored.includes(currentNeighbour)) {
-                neighbours.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (unexplored.includes(currentNeighbour)) {
+                    neighbours.push(currentNeighbour);
+                }
             }
         }
 
         if (row-1 >= 0) {
             let currentNeighbour = grid[row-1][col];
-            if (unexplored.includes(currentNeighbour)) {
-                neighbours.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (unexplored.includes(currentNeighbour)) {
+                    neighbours.push(currentNeighbour);
+                }
             }
         }
 
         if (col-1 >= 0) {
             let currentNeighbour = grid[row][col-1];
-            if (unexplored.includes(currentNeighbour)) {
-                neighbours.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (unexplored.includes(currentNeighbour)) {
+                    neighbours.push(currentNeighbour);
+                }
             }
         }
         
@@ -313,37 +332,45 @@ async function bfsSearch(start, goal) {
 
         if (row+1 < numRows) {
             let currentNeighbour = grid[row+1][col];
-            if (!explored.includes(currentNeighbour)) {
-                queue.push(currentNeighbour);
-                cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
-                explored.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (!explored.includes(currentNeighbour)) {
+                    queue.push(currentNeighbour);
+                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    explored.push(currentNeighbour);
+                }
             }
         }
 
         if (col+1 < numCols) {
             let currentNeighbour = grid[row][col+1];
-            if (!explored.includes(currentNeighbour)) {
-                queue.push(currentNeighbour);
-                cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
-                explored.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (!explored.includes(currentNeighbour)) {
+                    queue.push(currentNeighbour);
+                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    explored.push(currentNeighbour);
+                }
             }
         }
 
         if (row-1 >= 0) {
             let currentNeighbour = grid[row-1][col];
-            if (!explored.includes(currentNeighbour)) {
-                queue.push(currentNeighbour);
-                cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
-                explored.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (!explored.includes(currentNeighbour)) {
+                    queue.push(currentNeighbour);
+                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    explored.push(currentNeighbour);
+                }
             }
         }
 
         if (col-1 >= 0) {
             let currentNeighbour = grid[row][col-1];
-            if (!explored.includes(currentNeighbour)) {
-                queue.push(currentNeighbour);
-                cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
-                explored.push(currentNeighbour);
+            if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                if (!explored.includes(currentNeighbour)) {
+                    queue.push(currentNeighbour);
+                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    explored.push(currentNeighbour);
+                }
             }
         }
 
@@ -380,33 +407,41 @@ async function dfsSearch(start, goal) {
 
             if (row+1 < numRows) {
                 let currentNeighbour = grid[row+1][col];
-                if (!explored.includes(currentNeighbour)) {
-                    stack.push(currentNeighbour);
-                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                    if (!explored.includes(currentNeighbour)) {
+                        stack.push(currentNeighbour);
+                        cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    }
                 }
             }
 
             if (col+1 < numCols) {
                 let currentNeighbour = grid[row][col+1];
-                if (!explored.includes(currentNeighbour)) {
-                    stack.push(currentNeighbour);
-                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                    if (!explored.includes(currentNeighbour)) {
+                        stack.push(currentNeighbour);
+                        cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    }
                 }
             }
 
             if (row-1 >= 0) {
                 let currentNeighbour = grid[row-1][col];
-                if (!explored.includes(currentNeighbour)) {
-                    stack.push(currentNeighbour);
-                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                    if (!explored.includes(currentNeighbour)) {
+                        stack.push(currentNeighbour);
+                        cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    }
                 }
             }
 
             if (col-1 >= 0) {
                 let currentNeighbour = grid[row][col-1];
-                if (!explored.includes(currentNeighbour)) {
-                    stack.push(currentNeighbour);
-                    cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                if (getComputedStyle(currentNeighbour).getPropertyValue('--solidity') === "False") {
+                    if (!explored.includes(currentNeighbour)) {
+                        stack.push(currentNeighbour);
+                        cameFrom[getComputedStyle(currentNeighbour).getPropertyValue('--node-id')] = vertex;
+                    }
                 }
             }
 
@@ -433,13 +468,13 @@ async function primsMaze() {
     var frontier = [];
 
     // Arbitrary Vertex from G and add to V
-    let rand_vertex_index_row = Math.floor(((Math.random() * numRows) * 2) % 100);
-    let rand_vertex_index_col = Math.floor(((Math.random() * numCols) * 2) % 100);
+    let rand_vertex_index_row = Math.floor(((Math.random() * numRows) * 2) % numRows);
+    let rand_vertex_index_col = Math.floor(((Math.random() * numCols) * 2) % numCols);
     var start_vertex = grid[rand_vertex_index_row][rand_vertex_index_col];
     explored.push(start_vertex);
 
     // Set start point for Prim's Maze
-    start_vertex.style.backgroundColor = "#b1b1b1";
+    start_vertex.style.backgroundColor = baseBackgroundColour;
     start_vertex.innerHTML = '';
     start_vertex.style.setProperty('--solidity', "False");
 
@@ -521,21 +556,21 @@ async function primsMaze() {
             let node_in_middle = grid[middle_row][middle_col];
 
             // Carve a passage + Animating wall removing
-            random_frontier_node.style.backgroundColor = "#b1b1b1";
+            random_frontier_node.style.backgroundColor = baseBackgroundColour;
             random_frontier_node.innerHTML = '';
             random_frontier_node.classList.add('maze_wall');
             random_frontier_node.style.setProperty('--solidity', "False");
             random_frontier_node.style.animationPlayState = "running";
 
             // Middle node needs to be removed + Animating wall removing
-            node_in_middle.style.backgroundColor = "#b1b1b1";
+            node_in_middle.style.backgroundColor = baseBackgroundColour;
             node_in_middle.innerHTML = '';
             node_in_middle.classList.add('maze_wall');
             node_in_middle.style.setProperty('--solidity', "False");
             node_in_middle.style.animationPlayState = "running";
 
             // End node needs to be removed + Animating wall removing
-            node_picked.style.backgroundColor = "#b1b1b1";
+            node_picked.style.backgroundColor = baseBackgroundColour;
             node_picked.innerHTML = '';
             node_picked.classList.add('maze_wall');
             node_picked.style.setProperty('--solidity', "False");
@@ -596,8 +631,9 @@ async function kruskalsMaze() {
     solidifyMazeGrid();
     
     // Create set of trees
-    let dimRow = Math.floor((numRows+1)/2);
-    let dimCol = Math.floor((numCols+1)/2);
+    let dimRow = Math.floor(((numRows-1) - 0 + 2 - (0 % 2)) / 2);
+    let dimCol = Math.floor(((numCols-1) - 0 + 2 - (0 % 2)) / 2);
+      
     let trees = Array.from(Array(dimRow), () => new Array(dimCol));
 
     // Assign every inbetween node as a tree
@@ -670,21 +706,21 @@ async function kruskalsMaze() {
                 let middleTree = grid[gridRowMiddle][gridColMiddle];
 
                 // Carve a passage + Animating wall removing
-                randomTree.getNode().style.backgroundColor = "#b1b1b1";
+                randomTree.getNode().style.backgroundColor = baseBackgroundColour;
                 randomTree.getNode().innerHTML = '';
                 randomTree.getNode().classList.add('maze_wall');
                 randomTree.getNode().style.setProperty('--solidity', "False");
                 randomTree.getNode().style.animationPlayState = "running";
 
                 // Middle node needs to be removed + Animating wall removing
-                middleTree.style.backgroundColor = "#b1b1b1";
+                middleTree.style.backgroundColor = baseBackgroundColour;
                 middleTree.innerHTML = '';
                 middleTree.classList.add('maze_wall');
                 middleTree.style.setProperty('--solidity', "False");
                 middleTree.style.animationPlayState = "running";
 
                 // End node needs to be removed + Animating wall removing
-                randomNeighbouringTree.getNode().style.backgroundColor = "#b1b1b1";
+                randomNeighbouringTree.getNode().style.backgroundColor = baseBackgroundColour;
                 randomNeighbouringTree.getNode().innerHTML = '';
                 randomNeighbouringTree.getNode().classList.add('maze_wall');
                 randomNeighbouringTree.getNode().style.setProperty('--solidity', "False");
@@ -712,6 +748,23 @@ async function kruskalsMaze() {
         await sleep(10);
     }
 
+    // Set Start and End Icons
+    var start_row = 0;
+    var start_col = 0;
+
+    var end_row = 0;
+    var end_col = 0;
+
+    while (start_row === end_row && start_col === end_col) {
+        start_row =  Math.floor(Math.random() * numRows / 2 ) * 2;
+        start_col =  Math.floor(Math.random() * numCols / 2 ) * 2;
+        end_row =  Math.floor(Math.random() * numRows / 2 ) * 2;
+        end_col =  Math.floor(Math.random() * numCols / 2 ) * 2;
+    }
+
+    setStartIcon(start_row, start_col);
+    setEndIcon(end_row, end_col);
+
     // Cleanup
     cleanupMazeGrid();
 }
@@ -726,10 +779,13 @@ async function growingTreeMaze() {
     let explored = [];
     let cameFrom = {};
 
-    // Choose cell at random to select
-    let row = Math.floor(Math.random() * numRows);
-    let col = Math.floor(Math.random() * numCols);
+    // Choose odd cell at random to select
+    let row = Math.floor(Math.random() * numRows / 2) * 2;
+    let col = Math.floor(Math.random() * numCols / 2) * 2;
     let start_cell = grid[row][col];
+
+    console.log(row);
+    console.log(col);
 
     cells.push(start_cell);
 
@@ -797,23 +853,62 @@ async function growingTreeMaze() {
             randomNeighbour.style.setProperty('--solidity', "False");
 
         } else {
-            // Remove current from cells and add explored to current cell
-            cells.splice(cells.length-1,1);
-            currentCell.style.backgroundColor = "#b1b1b1";
+            try {
+                // Remove current from cells and add explored to current cell
+                cells.splice(cells.length-1,1);
+                currentCell.style.backgroundColor = baseBackgroundColour;
 
-            // Colour middle node as well
-            let originCell = cameFrom[getComputedStyle(currentCell).getPropertyValue('--node-id')];
+                // Colour middle node as well
+                let originCell = cameFrom[getComputedStyle(currentCell).getPropertyValue('--node-id')];
 
-            // Get Node in middle
-            let middle_row = Math.floor((Number(getComputedStyle(currentCell).getPropertyValue("--grid-x")) + Number(getComputedStyle(originCell).getPropertyValue("--grid-x")))/2);
-            let middle_col = Math.floor((Number(getComputedStyle(currentCell).getPropertyValue("--grid-y")) + Number(getComputedStyle(originCell).getPropertyValue("--grid-y")))/2);
-            let node_in_middle = grid[middle_row][middle_col];
-            node_in_middle.style.backgroundColor = "#b1b1b1";
+                if (originCell) {
+                    // Get Node in middle
+                    let middle_row = Math.floor((Number(getComputedStyle(currentCell).getPropertyValue("--grid-x")) + Number(getComputedStyle(originCell).getPropertyValue("--grid-x")))/2);
+                    let middle_col = Math.floor((Number(getComputedStyle(currentCell).getPropertyValue("--grid-y")) + Number(getComputedStyle(originCell).getPropertyValue("--grid-y")))/2);
+                    let node_in_middle = grid[middle_row][middle_col];
+                    node_in_middle.style.backgroundColor = baseBackgroundColour;
+                } else {
+                    break;
+                }
+
+                
+            } catch (e) {
+                let originCell = cameFrom[getComputedStyle(currentCell).getPropertyValue('--node-id')];
+
+                console.log(originCell);
+
+                let middle_row = Math.floor((Number(getComputedStyle(currentCell).getPropertyValue("--grid-x")) + Number(getComputedStyle(originCell).getPropertyValue("--grid-x")))/2);
+                let middle_col = Math.floor((Number(getComputedStyle(currentCell).getPropertyValue("--grid-y")) + Number(getComputedStyle(originCell).getPropertyValue("--grid-y")))/2);
+                
+                console.log(numRows);
+                console.log(numCols);
+                console.log(middle_row);
+                console.log(middle_col);
+            }
+            
         }
 
         // Sleep for animation
         await sleep(30);
     }
+
+    // Set Start and End Icons
+    var start_row = 0;
+    var start_col = 0;
+
+    var end_row = 0;
+    var end_col = 0;
+
+    while (start_row === end_row && start_col === end_col) {
+        start_row =  Math.floor(Math.random() * numRows / 2) * 2;
+        start_col =  Math.floor(Math.random() * numCols / 2) * 2;
+
+        end_row =  Math.floor(Math.random() * numRows / 2) * 2;
+        end_col =  Math.floor(Math.random() * numCols / 2) * 2;
+    }
+
+    setStartIcon(start_row, start_col);
+    setEndIcon(end_row, end_col);
 
     // Cleanup
     cleanupMazeGrid();
@@ -839,15 +934,15 @@ async function wilsonsMaze() {
     let node_in_middle = grid[middle_row][middle_col];
 
     startUSTCell.innerHTML = '';
-    startUSTCell.style.backgroundColor = "#b1b1b1";
+    startUSTCell.style.backgroundColor = baseBackgroundColour;
     startUSTCell.style.setProperty('--solidity', "False");
 
     node_in_middle.innerHTML = '';
-    node_in_middle.style.backgroundColor = "#b1b1b1";
+    node_in_middle.style.backgroundColor = baseBackgroundColour;
     node_in_middle.style.setProperty('--solidity', "False");
 
     startUSTCell2.innerHTML = '';
-    startUSTCell2.style.backgroundColor = "#b1b1b1";
+    startUSTCell2.style.backgroundColor = baseBackgroundColour;
     startUSTCell2.style.setProperty('--solidity', "False");
 
     // Setup Values
@@ -948,7 +1043,7 @@ async function wilsonsMaze() {
 
                     // Append wall
                     currentBacktrack.appendChild(wall);
-                    currentBacktrack.style.backgroundColor = "#b1b1b1";
+                    currentBacktrack.style.backgroundColor = baseBackgroundColour;
                     currentBacktrack.style.setProperty('--solidity', "True");
                     currentBacktrack.style.setProperty('--can-solidify', "False");
 
@@ -957,7 +1052,7 @@ async function wilsonsMaze() {
                     wall2.classList.add("intermediate_wall");
 
                     node_in_middle.appendChild(wall2);
-                    node_in_middle.style.backgroundColor = "#b1b1b1";
+                    node_in_middle.style.backgroundColor = baseBackgroundColour;
                     node_in_middle.style.setProperty('--solidity', "True");
                     node_in_middle.style.setProperty('--can-solidify', "False");
 
@@ -966,7 +1061,7 @@ async function wilsonsMaze() {
                     wall3.classList.add("intermediate_wall");
 
                     tempCurrent.appendChild(wall3);
-                    tempCurrent.style.backgroundColor = "#b1b1b1";
+                    tempCurrent.style.backgroundColor = baseBackgroundColour;
                     tempCurrent.style.setProperty('--solidity', "True");
                     tempCurrent.style.setProperty('--can-solidify', "False");
 
@@ -1007,15 +1102,15 @@ async function wilsonsMaze() {
             let node_in_middle = grid[middle_row][middle_col];
 
             randomWalk[i].innerHTML = '';
-            randomWalk[i].style.backgroundColor = "#b1b1b1";
+            randomWalk[i].style.backgroundColor = baseBackgroundColour;
             randomWalk[i].style.setProperty('--solidity', "False");
 
             node_in_middle.innerHTML = '';
-            node_in_middle.style.backgroundColor = "#b1b1b1";
+            node_in_middle.style.backgroundColor = baseBackgroundColour;
             node_in_middle.style.setProperty('--solidity', "False");
 
             randomWalk[i-1].innerHTML = '';
-            randomWalk[i-1].style.backgroundColor = "#b1b1b1";
+            randomWalk[i-1].style.backgroundColor = baseBackgroundColour;
             randomWalk[i-1].style.setProperty('--solidity', "False");
         }
 
@@ -1025,15 +1120,15 @@ async function wilsonsMaze() {
         let node_in_middle = grid[middle_row][middle_col];
 
         randomWalk[randomWalk.length-1].innerHTML = '';
-        randomWalk[randomWalk.length-1].style.backgroundColor = "#b1b1b1";
+        randomWalk[randomWalk.length-1].style.backgroundColor = baseBackgroundColour;
         randomWalk[randomWalk.length-1].style.setProperty('--solidity', "False");
 
         node_in_middle.innerHTML = '';
-        node_in_middle.style.backgroundColor = "#b1b1b1";
+        node_in_middle.style.backgroundColor = baseBackgroundColour;
         node_in_middle.style.setProperty('--solidity', "False");
 
         currentCell.innerHTML = '';
-        currentCell.style.backgroundColor = "#b1b1b1";
+        currentCell.style.backgroundColor = baseBackgroundColour;
         currentCell.style.setProperty('--solidity', "False");
 
         // Add random walk to UST
@@ -1052,11 +1147,28 @@ async function wilsonsMaze() {
             }
         }
     }
+    
+    // Set Start and End Icons
+    var start_row = 0;
+    var start_col = 0;
 
-    console.log("Completed Wilson's Algorithm");
+    var end_row = 0;
+    var end_col = 0;
+
+    while (start_row === end_row && start_col === end_col) {
+        start_row =  Math.floor(Math.random() * numRows / 2 ) * 2;
+        start_col =  Math.floor(Math.random() * numCols / 2 ) * 2;
+        end_row =  Math.floor(Math.random() * numRows / 2 ) * 2;
+        end_col =  Math.floor(Math.random() * numCols / 2 ) * 2;
+    }
+
+    setStartIcon(start_row, start_col);
+    setEndIcon(end_row, end_col);
 
     // Cleanup
     cleanupMazeGrid();
+    
+    console.log("Completed Wilson's Algorithm");
 }
 
 // ------------------------------------------------------------------------------- Grid Utility -------------------------------------------------------------------------
@@ -1104,11 +1216,17 @@ function makeGrid(rows, cols) {
                 if (getComputedStyle(node).getPropertyValue('--node-id') !== getComputedStyle(startNode).getPropertyValue('--node-id') &&
                     getComputedStyle(node).getPropertyValue('--solidity') === "False" &&
                     getComputedStyle(node).getPropertyValue('--is-end') === "False") {
-                    node.style.backgroundColor = "#5fb15f";
+                    
+                    
+                    node.style.backgroundColor = startNodeColour;
                     node.style.setProperty('--is-start', "True");
 
                     startNode.style.setProperty('--is-start', "False");
-                    startNode.style.backgroundColor = "#b1b1b1";
+                    startNode.style.backgroundColor = baseBackgroundColour;
+                    
+                    startNode.innerHTML = "";
+                    node.innerHtml = "";
+
                     startNode = node;
                 }
             } else if (movingEnd) {
@@ -1119,7 +1237,11 @@ function makeGrid(rows, cols) {
                     node.style.setProperty('--is-end', "True");
 
                     endNode.style.setProperty('--is-end', "False");
-                    endNode.style.backgroundColor = "#b1b1b1";
+                    endNode.style.backgroundColor = baseBackgroundColour;
+
+                    endNode.innerHtml = "";
+                    node.innerHTML = "";
+
                     endNode = node;
                 }
             } else {
@@ -1129,9 +1251,11 @@ function makeGrid(rows, cols) {
                     getComputedStyle(node).getPropertyValue('--is-end') === "False") {
                     if (isMouseDown === true) {
                         if (getComputedStyle(node).getPropertyValue('--solidity') === "False") {
+
                             let wall = document.createElement("div");
                             wall.style.backgroundColor = "#162336";
                             wall.classList.add('wall');
+                            node.innerHTML = "";
                             node.appendChild(wall);
                             wall.style.animationPlayState = "running";
                             node.style.setProperty('--solidity', "True");
@@ -1170,6 +1294,18 @@ function makeGrid(rows, cols) {
 }
 
 function resetGrid() {
+    // Do this function always before creating a new maze
+    removeAllChildren();
+    makeGrid(numRows, numCols);
+    
+    row = Math.floor(numRows/2);
+    col = Math.floor(numCols/4);
+    col2 = Math.floor(3*numCols/4);
+
+    return [row, col, col2]
+}
+
+function removeAllChildren() {
     while (visualiser.lastChild) {
         visualiser.removeChild(visualiser.lastChild);
     }
@@ -1199,7 +1335,7 @@ function solidifyMazeGrid() {
             let node = grid[r][c];
             node.style.setProperty('--solidity', "False");
             if (getComputedStyle(node).getPropertyValue('--is-start') === "True" || getComputedStyle(node).getPropertyValue('--is-end') === "True") {
-                node.style.backgroundColor = "#b1b1b1";
+                node.style.backgroundColor = baseBackgroundColour;
                 node.style.setProperty('--is-start', "False");
                 node.style.setProperty('--is-end', "False");
             }
@@ -1210,6 +1346,43 @@ function solidifyMazeGrid() {
             node.appendChild(wall);
             node.style.setProperty('--solidity', "True");
             node.style.setProperty('--can-solidify', "False");
+        }
+    }
+}
+
+function pathfindCleanup() {
+    // Cleanup so you can pathfind after
+
+    console.log(getComputedStyle(endNode).getPropertyValue('--node-id'))
+
+    for (i = 0; i < numRows; i++) {
+        for (j = 0; j < numCols; j++) {
+            grid[i][j].style.setProperty('--g-score', 9999);
+            grid[i][j].style.setProperty('--f-score', 9999);
+
+            if (grid[i][j].lastChild) {
+                // Remove check divs from all
+                if (grid[i][j].lastChild.classList.contains("check")) {
+                    grid[i][j].removeChild(grid[i][j].lastChild);
+                }
+            } 
+            
+            // Remove path from visualiser
+            if (getComputedStyle(grid[i][j]).getPropertyValue('--path') === "True") {
+                grid[i][j].style.setProperty('--path', "False");
+
+                // Check it's a start node or end node
+                if (getComputedStyle(grid[i][j]).getPropertyValue('--node-id') === getComputedStyle(startNode).getPropertyValue('--node-id')) {
+                    console.log("chanegd 1")
+                    grid[i][j].style.backgroundColor = startNodeColour;
+                } else if (getComputedStyle(grid[i][j]).getPropertyValue('--node-id') === getComputedStyle(endNode).getPropertyValue('--node-id')) {
+                    console.log("chanegd")
+                    grid[i][j].style.backgroundColor = endNodeColour;
+                } else {
+                    grid[i][j].style.backgroundColor = baseBackgroundColour;
+                }
+                
+            }
         }
     }
 }
@@ -1232,6 +1405,28 @@ function cleanupMazeGrid() {
     visualiser.style.pointerEvents = "auto";
 }
 
+function enableFunctionality() {
+    // Enable all buttons
+    pathfindButton.disabled = false; 
+    mazeGenButton.disabled = false; 
+    resetGridButton.disabled = false; 
+    changeGridButton.disabled = false;
+
+    // Enable the visualiser
+    visualiser.style.pointerEvents = "auto";
+}
+
+function disableFunctionality() {
+    // Disable all buttons
+    pathfindButton.disabled = true; 
+    mazeGenButton.disabled = true; 
+    resetGridButton.disabled = true; 
+    changeGridButton.disabled = true;
+
+    // Disable the visualiser
+    visualiser.style.pointerEvents = "none";
+}
+
 // INITIATION FUNCTION: Set Grid to be 16 x 32 size with start at (8, 8) and end at (8, 24)
 function initiation() {
     makeGrid(numRows, numCols);
@@ -1243,15 +1438,17 @@ function initiation() {
 
 // CALL INITIATION
 pathfindButton.addEventListener("click", async function() {
+    disableFunctionality();
+    pathfindCleanup();
     var selectedAlgorithm = pathfindAlgorithmSelection.value;
     if (selectedAlgorithm == "A* Search") {
         console.log("A* Search Started");
-        aStarSearch(startNode, endNode);
+        await aStarSearch(startNode, endNode);
         console.log("A* Search Finished");
-    } 
+    }
     else if (selectedAlgorithm == "BFS Search") {
         console.log("BFS Search Started");
-        bfsSearch(startNode, endNode);
+        await bfsSearch(startNode, endNode);
         console.log("BFS Search Finished");
     }
     else if (selectedAlgorithm == "DFS Search") {
@@ -1261,15 +1458,18 @@ pathfindButton.addEventListener("click", async function() {
     }
     else if (selectedAlgorithm == "Dijkstra's Search") {
         console.log("Dijkstra's Search Started");
-        dijkstrasSearch(startNode, endNode);
+        await dijkstrasSearch(startNode, endNode);
         console.log("Dijkstra's Search Finished");
     }
     else {
         console.log("INVALID PATHFINDING CHOICE");
     }
+    enableFunctionality();
 });
 
 mazeGenButton.addEventListener("click", async function() {
+    disableFunctionality();
+    resetGrid();
     var selectedAlgorithm = mazeGenAlgorithmSelection.value;
     if (selectedAlgorithm == "Prim's Maze") {
         console.log("Prim's Maze Started");
@@ -1290,33 +1490,26 @@ mazeGenButton.addEventListener("click", async function() {
     } else {
         console.log("INVALID MAZE CHOICE");
     }
+    enableFunctionality();
 });
 
-gridSizeSlider.addEventListener("input", function() {
-    numCols = gridSizeSlider.value;
-    numRows = Math.floor(numCols * (7/15));
 
+gridSizeSlider.addEventListener("input", function() {
     gridSize.textContent = "Current Grid Size: " + numCols;
 });
 
 changeGridButton.addEventListener("click", function() {
-    resetGrid();
-    makeGrid(numRows, numCols);
-    
-    row = Math.floor(numRows/2);
-    col = Math.floor(numCols/4);
-    col2 = Math.floor(3*numCols/4);
+    numCols = gridSizeSlider.value;
+    numRows = Math.floor(numCols * (35/75));
+
+    [row, col, col2] = resetGrid();
+
     setStartIcon(row, col);
     setEndIcon(row, col2);
 })
 
 resetGridButton.addEventListener("click", function() {
-    resetGrid();
-    makeGrid(numRows, numCols);
-    
-    row = Math.floor(numRows/2);
-    col = Math.floor(numCols/4);
-    col2 = Math.floor(3*numCols/4);
+    [row, col, col2] = resetGrid();
     setStartIcon(row, col);
     setEndIcon(row, col2);
 });
